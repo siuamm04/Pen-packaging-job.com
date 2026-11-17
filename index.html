@@ -1,115 +1,237 @@
+
+            
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pen Packaging Job Center - আবেদন ফর্ম</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .form-container {
-            background: #ffffff;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pen Packaging Job Center</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #f0f4f8;
+}
+.container {
+  max-width: 430px;
+  margin: 35px auto;
+  background: white;
+  padding: 28px 22px;
+  border-radius: 15px;
+  box-shadow: 0 4px 18px #00000015;
+}
+h1 {
+  text-align: center;
+  color: #174a7e;
+  font-size: 25px;
+}
+h2 {
+  text-align: center;
+  font-size: 19px;
+  margin-bottom: 25px;
+}
+label {
+  display: block;
+  margin: 13px 0 7px;
+  font-weight: bold;
+}
+input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+button {
+  width: 100%;
+  padding: 15px;
+  background: #1769aa;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  margin-top: 23px;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: .6;
+}
+#message {
+  text-align: center;
+  margin-top: 15px;
+  overflow-wrap: anywhere;
+}
+</style>
 </head>
+
 <body>
 
-    <div class="form-container">
-        <h2>পেন প্যাকেজিং জব সেন্টার</h2>
-        <p style="text-align: center; color: #666;">চাকরির জন্য নিচের ফর্মটি পূরণ করুন</p>
-        
-        <!-- আবেদন ফর্ম -->
-        <form id="jobForm">
-            <input type="text" id="name" placeholder="আপনার পুরো নাম" required>
-            <input type="tel" id="phone" placeholder="মোবাইল নম্বর" required>
-            <textarea id="experience" rows="4" placeholder="কাজের অভিজ্ঞতা বা অন্যান্য বিবরণ" required></textarea>
-            <button type="submit">আবেদন জমা দিন</button>
-        </form>
-    </div>
+<div class="container">
 
-    <!-- ফায়ারবেস ডেটাবেজ সংযোগ ও ডেটা সেভ করার স্ক্রিপ্ট -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<h1>Pen Packaging Job Center</h1>
+<h2>Create Your Account</h2>
 
-        // ফায়ারবেস কনফিগারেশন (এখানে আপনার প্রজেক্টের আসল তথ্য বসাবেন)
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "pen-packaging-job-center-3346f",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+<form id="registerForm">
 
-        // ফায়ারবেস ইনিশিয়েট করুন
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+<label>First Name</label>
+<input id="firstName" type="text"
+placeholder="Enter First Name" required>
 
-        // ফর্ম সাবমিট হওয়ার ইভেন্ট হ্যান্ডেল করা
-        const jobForm = document.getElementById("jobForm");
-        jobForm.addEventListener("submit", async (e) => {
-            e.preventDefault(); // পেজ রিলোড হওয়া বন্ধ করবে
+<label>Last Name</label>
+<input id="lastName" type="text"
+placeholder="Enter Last Name" required>
 
-            // ফর্মের ইনপুট ফিল্ডগুলো থেকে ডেটা সংগ্রহ করা
-            const applicantName = document.getElementById("name").value;
-            const applicantPhone = document.getElementById("phone").value;
-            const applicantExperience = document.getElementById("experience").value;
+<label>Indian Phone Number</label>
+<input id="phone" type="tel"
+placeholder="+91XXXXXXXXXX"
+pattern="(\+91)?[6-9][0-9]{9}" required>
 
-            try {
-                // ফায়ারস্টোর ডেটাবেজে 'jobApplications' কালেকশনে ডেটা সেভ করা
-                await addDoc(collection(db, "jobApplications"), {
-                    name: applicantName,
-                    phone: applicantPhone,
-                    experience: applicantExperience,
-                    appliedAt: new Date()
-                });
+<label>Gmail Address</label>
+<input id="email" type="email"
+placeholder="Enter Gmail Address"
+pattern="[a-zA-Z0-9._%+-]+@gmail\.com"
+required>
 
-                alert("আপনার আবেদন সফলভাবে জমা হয়েছে!");
-                jobForm.reset(); // ফর্মটি খালি করে দেওয়া
-            } catch (error) {
-                console.error("ডেটা সেভ করতে সমস্যা হয়েছে: ", error);
-                alert("দুঃখিত, আবেদন জমা হয়নি। আবার চেষ্টা করুন।");
-            }
-        });
-    </script>
+<label>Password</label>
+<input id="password" type="password"
+placeholder="Create Password"
+minlength="8" required>
+
+<button id="registerButton" type="submit">
+Register Now
+</button>
+
+<p id="message"></p>
+
+</form>
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile
+}
+from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+// আপনার Firebase Configuration এখানে বসান
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.firebasestorage.app",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const form = document.getElementById("registerForm");
+const message = document.getElementById("message");
+const button = document.getElementById("registerButton");
+
+form.addEventListener("submit", async (e) => {
+
+  e.preventDefault();
+
+  const firstName =
+    document.getElementById("firstName").value.trim();
+
+  const lastName =
+    document.getElementById("lastName").value.trim();
+
+  let phone =
+    document.getElementById("phone").value.trim();
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+  if (!email.toLowerCase().endsWith("@gmail.com")) {
+    message.textContent = "Please enter a Gmail address.";
+    return;
+  }
+
+  phone = phone.replace(/\s/g, "");
+
+  if (/^[6-9][0-9]{9}$/.test(phone)) {
+    phone = "+91" + phone;
+  }
+
+  if (!/^\+91[6-9][0-9]{9}$/.test(phone)) {
+    message.textContent = "Enter a valid Indian phone number.";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Creating Account...";
+  message.textContent = "";
+
+  try {
+
+    const userCredential =
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+    const user = userCredential.user;
+
+    await updateProfile(user, {
+      displayName: firstName + " " + lastName
+    });
+
+    await setDoc(doc(db, "users", user.uid), {
+      firstName: firstName,
+      lastName: lastName,
+      phone: phone,
+      email: email,
+      createdAt: serverTimestamp()
+    });
+
+    message.textContent =
+      "Registration successful! Your account has been created.";
+
+    form.reset();
+
+  } catch (error) {
+
+    message.textContent =
+      "Error: " + error.message;
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "Register Now";
+
+  }
+
+});
+
+</script>
 
 </body>
 </html>
