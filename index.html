@@ -1,155 +1,115 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pen Packaging Job Center</title>
-
-<style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f0f4f8;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-
-.container {
-  background: white;
-  width: 90%;
-  max-width: 400px;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px #0002;
-}
-
-h2 {
-  text-align: center;
-  color: #123c69;
-}
-
-p {
-  text-align: center;
-  color: #666;
-}
-
-input {
-  width: 100%;
-  padding: 13px;
-  margin: 9px 0;
-  border: 1px solid #ccc;
-  border-radius: 7px;
-  font-size: 15px;
-}
-
-button {
-  width: 100%;
-  padding: 13px;
-  background: #1266d4;
-  color: white;
-  border: none;
-  border-radius: 7px;
-  font-size: 16px;
-  margin-top: 12px;
-  cursor: pointer;
-}
-
-.switch {
-  color: #1266d4;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.hidden {
-  display: none;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pen Packaging Job Center - আবেদন ফর্ম</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .form-container {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
+    <div class="form-container">
+        <h2>পেন প্যাকেজিং জব সেন্টার</h2>
+        <p style="text-align: center; color: #666;">চাকরির জন্য নিচের ফর্মটি পূরণ করুন</p>
+        
+        <!-- আবেদন ফর্ম -->
+        <form id="jobForm">
+            <input type="text" id="name" placeholder="আপনার পুরো নাম" required>
+            <input type="tel" id="phone" placeholder="মোবাইল নম্বর" required>
+            <textarea id="experience" rows="4" placeholder="কাজের অভিজ্ঞতা বা অন্যান্য বিবরণ" required></textarea>
+            <button type="submit">আবেদন জমা দিন</button>
+        </form>
+    </div>
 
-  <div id="register">
-    <h2>Pen Packaging Job Center</h2>
-    <p>Create Your Account</p>
+    <!-- ফায়ারবেস ডেটাবেজ সংযোগ ও ডেটা সেভ করার স্ক্রিপ্ট -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    <form id="registerForm">
-      <input type="text" id="name"
-        placeholder="Full Name" required>
+        // ফায়ারবেস কনফিগারেশন (এখানে আপনার প্রজেক্টের আসল তথ্য বসাবেন)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "pen-packaging-job-center-3346f",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
-      <input type="email" id="gmail"
-        placeholder="Gmail Address" required>
+        // ফায়ারবেস ইনিশিয়েট করুন
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-      <input type="password" id="password"
-        placeholder="Create Password"
-        minlength="8" required>
+        // ফর্ম সাবমিট হওয়ার ইভেন্ট হ্যান্ডেল করা
+        const jobForm = document.getElementById("jobForm");
+        jobForm.addEventListener("submit", async (e) => {
+            e.preventDefault(); // পেজ রিলোড হওয়া বন্ধ করবে
 
-      <button type="submit">Register Now</button>
-    </form>
+            // ফর্মের ইনপুট ফিল্ডগুলো থেকে ডেটা সংগ্রহ করা
+            const applicantName = document.getElementById("name").value;
+            const applicantPhone = document.getElementById("phone").value;
+            const applicantExperience = document.getElementById("experience").value;
 
-    <p>Already have an account?
-      <span class="switch"
-        onclick="showLogin()">Login</span>
-    </p>
-  </div>
+            try {
+                // ফায়ারস্টোর ডেটাবেজে 'jobApplications' কালেকশনে ডেটা সেভ করা
+                await addDoc(collection(db, "jobApplications"), {
+                    name: applicantName,
+                    phone: applicantPhone,
+                    experience: applicantExperience,
+                    appliedAt: new Date()
+                });
 
-  <div id="login" class="hidden">
-    <h2>Welcome Back</h2>
-    <p>Login to Your Account</p>
-
-    <form id="loginForm">
-      <input type="email"
-        placeholder="Gmail Address" required>
-
-      <input type="password"
-        placeholder="Password" required>
-
-      <button type="submit">Login Now</button>
-    </form>
-
-    <p>Don't have an account?
-      <span class="switch"
-        onclick="showRegister()">Register Now</span>
-    </p>
-  </div>
-
-</div>
-
-<script>
-function showLogin() {
-  document.getElementById("register")
-    .classList.add("hidden");
-  document.getElementById("login")
-    .classList.remove("hidden");
-}
-
-function showRegister() {
-  document.getElementById("login")
-    .classList.add("hidden");
-  document.getElementById("register")
-    .classList.remove("hidden");
-}
-
-document.getElementById("registerForm")
-.addEventListener("submit", function(e) {
-  e.preventDefault();
-  alert("Registration form ready! Connect a secure authentication system to create your account.");
-});
-
-document.getElementById("loginForm")
-.addEventListener("submit", function(e) {
-  e.preventDefault();
-  alert("Please connect the secure login system first.");
-});
-</script>
+                alert("আপনার আবেদন সফলভাবে জমা হয়েছে!");
+                jobForm.reset(); // ফর্মটি খালি করে দেওয়া
+            } catch (error) {
+                console.error("ডেটা সেভ করতে সমস্যা হয়েছে: ", error);
+                alert("দুঃখিত, আবেদন জমা হয়নি। আবার চেষ্টা করুন।");
+            }
+        });
+    </script>
 
 </body>
 </html>
