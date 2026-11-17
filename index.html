@@ -231,7 +231,77 @@ form.addEventListener("submit", async (e) => {
 
 });
 
+</script> 
+<div id="dashboard" style="display:none;">
+
+<h2>Welcome to Pen Packaging Job Center</h2>
+
+<div class="dashboard-menu">
+
+<button onclick="showOption('Available Jobs')">
+Available Jobs
+</button>
+
+<button onclick="showOption('New Work Order')">
+New Work Order
+</button>
+
+<button onclick="showOption('My Orders')">
+My Orders
+</button>
+
+<button onclick="showOption('Order History')">
+Order History
+</button>
+
+<button onclick="showOption('Payment Details')">
+Payment Details
+</button>
+
+<button onclick="showOption('My Profile')">
+My Profile
+</button>
+
+<button onclick="showOption('Contact Support')">
+Contact Support
+</button>
+
+<button onclick="logoutUser()">
+Logout
+</button>
+
+</div>
+
+<div id="dashboardContent"></div>
+
+</div>
+
+<style>
+.dashboard-menu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.dashboard-menu button {
+  min-height: 75px;
+  background: #174a7e;
+  border-radius: 10px;
+  color: white;
+}
+</style>
+
+<script>
+function showOption(name) {
+  document.getElementById("dashboardContent")
+    .innerHTML = "<h3>" + name +
+    "</h3><p>This section is coming soon.</p>";
+}
+
+function logoutUser() {
+  location.reload();
+}
 </script>
+
 
 </body>
 </html>
